@@ -8,18 +8,18 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>TS进阶 | 小枫</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="学习之前我们先理解两个关键字keyof和in、extends keyof：可以用来获取一个对象接口所有属性值 12345interface Text &amp;#123;    name: string,    age: number&amp;#125;let Test: keyof Text // =&amp;gt; &quot;name&quot; | &quot;age&quot; | &quot;自带的属性&quot;  in：用来遍历枚举类型 1234567891011">
+  <meta name="description" content="学习之前我们先理解两个关键字keyof和in、extends keyof：可以用来获取一个对象接口所有属性值 12345interface Text &amp;#123;    name: string,    age: number&amp;#125;let Test: keyof Text // =&amp;gt; &quot;name&quot; | &quot;age&quot; | &quot;自带的属性&quot;">
 <meta name="keywords" content="typescript">
 <meta property="og:type" content="article">
 <meta property="og:title" content="TS进阶">
 <meta property="og:url" content="http://yoursite.com/2019/10/18/TS进阶/index.html">
 <meta property="og:site_name" content="小枫">
-<meta property="og:description" content="学习之前我们先理解两个关键字keyof和in、extends keyof：可以用来获取一个对象接口所有属性值 12345interface Text &amp;#123;    name: string,    age: number&amp;#125;let Test: keyof Text // =&amp;gt; &quot;name&quot; | &quot;age&quot; | &quot;自带的属性&quot;  in：用来遍历枚举类型 1234567891011">
+<meta property="og:description" content="学习之前我们先理解两个关键字keyof和in、extends keyof：可以用来获取一个对象接口所有属性值 12345interface Text &amp;#123;    name: string,    age: number&amp;#125;let Test: keyof Text // =&amp;gt; &quot;name&quot; | &quot;age&quot; | &quot;自带的属性&quot;">
 <meta property="og:locale" content="zh-cn">
-<meta property="og:updated_time" content="2019-11-26T15:58:28.702Z">
+<meta property="og:updated_time" content="2019-11-26T16:00:42.149Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="TS进阶">
-<meta name="twitter:description" content="学习之前我们先理解两个关键字keyof和in、extends keyof：可以用来获取一个对象接口所有属性值 12345interface Text &amp;#123;    name: string,    age: number&amp;#125;let Test: keyof Text // =&amp;gt; &quot;name&quot; | &quot;age&quot; | &quot;自带的属性&quot;  in：用来遍历枚举类型 1234567891011">
+<meta name="twitter:description" content="学习之前我们先理解两个关键字keyof和in、extends keyof：可以用来获取一个对象接口所有属性值 12345interface Text &amp;#123;    name: string,    age: number&amp;#125;let Test: keyof Text // =&amp;gt; &quot;name&quot; | &quot;age&quot; | &quot;自带的属性&quot;">
   
     <link rel="alternative" href="/atom.xml" title="小枫" type="application/atom+xml">
   
@@ -156,6 +156,8 @@
         <p>学习之前我们先理解两个关键字<code>keyof</code>和<code>in</code>、<code>extends</code></p>
 <p><code>keyof</code>：可以用来获取一个<strong>对象接口</strong>所有属性值</p>
 <figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> Text &#123;</span><br><span class="line">    name: <span class="built_in">string</span>,</span><br><span class="line">    age: <span class="built_in">number</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> Test: keyof Text <span class="comment">// =&gt; "name" | "age" | "自带的属性"</span></span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
 
 <p><code>in</code>：用来遍历枚举类型</p>
 <figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> Keys &#123;</span><br><span class="line">    Red,</span><br><span class="line">    Green</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">type</span> Obj = &#123;</span><br><span class="line">    [p <span class="keyword">in</span> Keys]: <span class="built_in">any</span></span><br><span class="line">&#125; <span class="comment">// =&gt; Obj &#123;0: any, 1: any&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Keys1 = <span class="string">"a"</span> | <span class="string">"b"</span></span><br><span class="line"><span class="keyword">type</span> Obj1 = &#123;</span><br><span class="line">  [p <span class="keyword">in</span> Keys]: <span class="built_in">any</span></span><br><span class="line">&#125; <span class="comment">// =&gt; Obj1 &#123;a: any, b: any&#125;</span></span><br></pre></td></tr></table></figure>
@@ -345,19 +347,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">webpack</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">typescript</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">兼容性</a>
+                <a href="javascript:void(0)" class="js-tag color3">webpack</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">javascript</a>
+                <a href="javascript:void(0)" class="js-tag color4">兼容性</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -366,6 +364,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">vue</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">javascript</a>
               </li>
              
               <li class="article-tag-list-item">

@@ -158,63 +158,7 @@
 
 <p>执行该命令会在webpack-demo创建package.json文件</p>
 <hr>
-<h3 id="2、安装对应依赖"><a href="#2、安装对应依赖" class="headerlink" title="2、安装对应依赖"></a>2、安装对应依赖</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install webpack webpack-cli --save-dev</span><br></pre></td></tr></table></figure>
-
-<p>文件夹会生成node_modules文件夹，这个文件夹装有项目所需要依赖的插件。</p>
-<hr>
-<h4 id="3、修改package-json"><a href="#3、修改package-json" class="headerlink" title="3、修改package.json"></a>3、修改package.json</h4><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">"scripts": &#123;</span><br><span class="line">	  "test": "echo \"Error: no test specified\" &amp;&amp; exit 1",</span><br><span class="line">  	"dev": "webpack"</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p>执行上述操作运行起来～ <code>npm run dev</code></p>
-</blockquote>
-<p>![image-20191125175940767](/Users/xiaofeng/Library/Application Support/typora-user-images/image-20191125175940767.png)</p>
-<p>报错！</p>
-<p>1、第一个错误说的是：没有设置<code>mode</code>，默认是<code>production</code>模式。</p>
-<p>2、第二个找不到入口</p>
-<p>第一个问题解决:在pagkage.json</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">"srcipt": &#123;</span><br><span class="line">   "test": "echo \"Error: no test specified\" &amp;&amp; exit 1",</span><br><span class="line">   "dev": "webpack --mode development"</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>打包命令：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">"srcipt": &#123;</span><br><span class="line">   "test": "echo \"Error: no test specified\" &amp;&amp; exit 1",</span><br><span class="line">   "dev": "webpack --mode development",</span><br><span class="line">   "build": "webpack --mode production"</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>第二个问题解决:  创建src文件夹，在src文件夹下创建index.js</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir src &amp;&amp; touch index.js</span><br></pre></td></tr></table></figure>
-
-<p><font style="color:red">注意：默认package.json文件下<code>main</code>默认是’index.js’。如果改成a.js。那么入口文件就是a.js</font></p>
-<p>这是webpack4.0默认配置。</p>
-<p>然后再执行<code>npm run dev</code></p>
-<p>![image-20191125185421144](/Users/xiaofeng/Library/Application Support/typora-user-images/image-20191125185421144.png)</p>
-<p>在根目录上出现一个<code>dist</code>包，里面有<code>main.js</code>。在<code>index.html</code>引入<code>dist/main.js</code>。就能执行打包后的js了。</p>
-<hr>
-<h4 id="4、自定义配置-webpack-config-js"><a href="#4、自定义配置-webpack-config-js" class="headerlink" title="4、自定义配置 webpack.config.js"></a>4、自定义配置 webpack.config.js</h4><p>虽然webpack4.0有默认配置，但是我们还是想要自己控制配置。可以使用<code>webpack.config.js</code></p>
-<p>执行下面的命令创建<code>webpack.config.js</code></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir build &amp;&amp; cd build &amp;&amp; touch webpack.config.js</span><br></pre></td></tr></table></figure>
-
-<p>在<code>webpack.config.js</code>简单配置一下吧。</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">const path = require('path'); // 路径插件</span><br><span class="line">module.exports = &#123;</span><br><span class="line">  entry: path.resolve(__dirname, '../src/index.js'),  // 导入入口文件，根据webpack.config.js的绝对路径所引入的。</span><br><span class="line">  output: &#123;  // 输出配置</span><br><span class="line">    path: path.resolve(__dirname, 'dist'),</span><br><span class="line">    filename: 'main.js'</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p><font style="color:red">注意：<code>entry</code>路径一定要引入正确</font></p>
-<p>如果<code>webpack.config.js</code>在项目的跟目录，那么<code>entry：path.resolve(__dirname, &#39;./src/index.js&#39;)</code></p>
-<p>如果运行<code>npm run dev</code>或者<code>npm run build</code>还是遇到下图错误。</p>
-<p>![image-20191125175940767](/Users/xiaofeng/Library/Application Support/typora-user-images/image-20191125175940767.png)</p>
-<p><strong>1、查看<code>package.json</code>的<code>main</code>的入口文件和<code>webpack.config.js</code>下<code>entry</code>的文件是否匹配</strong></p>
-<p><strong>2、查看<code>entry</code>路径是否匹配</strong></p>
-<hr>
-<h4 id="5、webpack-dev-server"><a href="#5、webpack-dev-server" class="headerlink" title="5、webpack-dev-server"></a>5、webpack-dev-server</h4><p>在上面例子中我们执行<code>npm run dev</code>就会打包到dist包里面。使用vue-cli脚手架时，<code>npm run dev</code>会运行项目，并不会打包。所以我们需要<code>webpack-dev-server</code>插件来运行我们的项目。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install webpack-dev-server --save-dev</span><br></pre></td></tr></table></figure>
-
-<p>下载插件之后， 在<code>package.json</code>下的<code>dev</code>添加以下命令:</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">"scripts": &#123;</span><br><span class="line">   "dev": "webpack-dev-server --mode development"</span><br><span class="line"> &#125;,</span><br></pre></td></tr></table></figure>
-
-<p>添加完成后，执行<code>npm run dev</code>就会运行起来项目了。</p>
-<p>![image-20191126103917447](/Users/xiaofeng/Library/Application Support/typora-user-images/image-20191126103917447.png)</p>
-<p>默认链接：<code>http://localhost:8080/</code>,如果8080端口被占用时，会启其它端口。</p>
-<blockquote>
-<p>参考：</p>
-<p>腾讯云文档：<a href="https://cloud.tencent.com/developer/doc/1250" target="_blank" rel="noopener">https://cloud.tencent.com/developer/doc/1250</a></p>
-<p>官方文档：<a href="https://webpack.docschina.org/configuration/dev-server/" target="_blank" rel="noopener">https://webpack.docschina.org/configuration/dev-server/</a></p>
-</blockquote>
-
+        
       
 
       
@@ -290,31 +234,7 @@
         <p>学习之前我们先理解两个关键字<code>keyof</code>和<code>in</code>、<code>extends</code></p>
 <p><code>keyof</code>：可以用来获取一个<strong>对象接口</strong>所有属性值</p>
 <figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> Text &#123;</span><br><span class="line">    name: <span class="built_in">string</span>,</span><br><span class="line">    age: <span class="built_in">number</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> Test: keyof Text <span class="comment">// =&gt; "name" | "age" | "自带的属性"</span></span><br></pre></td></tr></table></figure>
-
-<p><code>in</code>：用来遍历枚举类型</p>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> Keys &#123;</span><br><span class="line">    Red,</span><br><span class="line">    Green</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">type</span> Obj = &#123;</span><br><span class="line">    [p <span class="keyword">in</span> Keys]: <span class="built_in">any</span></span><br><span class="line">&#125; <span class="comment">// =&gt; Obj &#123;0: any, 1: any&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Keys1 = <span class="string">"a"</span> | <span class="string">"b"</span></span><br><span class="line"><span class="keyword">type</span> Obj1 = &#123;</span><br><span class="line">  [p <span class="keyword">in</span> Keys]: <span class="built_in">any</span></span><br><span class="line">&#125; <span class="comment">// =&gt; Obj1 &#123;a: any, b: any&#125;</span></span><br></pre></td></tr></table></figure>
-
-<p><code>extends</code>：可以继承一个<code>interface</code>，也可以继承一个类，还可以判断有条件的类型</p>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">T <span class="keyword">extends</span> U ? X : Y</span><br></pre></td></tr></table></figure>
-
-<p>代码的意思是，如果T能够赋值给U，那么类型是X，否则是Y。</p>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Words = <span class="string">'a'</span> | <span class="string">'b'</span> | <span class="string">'c'</span></span><br><span class="line"><span class="keyword">type</span> W&lt;T&gt; = T <span class="keyword">extends</span> Words ? <span class="literal">true</span> : <span class="literal">false</span></span><br><span class="line"><span class="keyword">type</span> WA = W&lt;<span class="string">'a'</span>&gt; <span class="comment">// true</span></span><br><span class="line"><span class="keyword">type</span> WD = W&lt;<span class="string">'d'</span>&gt; <span class="comment">// false</span></span><br><span class="line"><span class="comment">// 第二个例子</span></span><br><span class="line"><span class="keyword">interface</span> Ex1 &#123;</span><br><span class="line">    name: <span class="built_in">string</span>,</span><br><span class="line">    age: <span class="built_in">number</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">interface</span> Ex2 &#123;</span><br><span class="line">    text: <span class="built_in">string</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">interface</span> Ex3 &#123;</span><br><span class="line">  name: <span class="built_in">string</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">type</span> Excl = Extract&lt;Ex1, Ex2&gt; <span class="comment">// never</span></span><br><span class="line"><span class="keyword">type</span> Exc2 = Extract&lt;Ex1, Ex3&gt; <span class="comment">// Exc2 = Ex1</span></span><br></pre></td></tr></table></figure>
-
-<p>看到上面的例子，我感觉<code>extends</code>像是判断某个属性是否在接口里面</p>
-<h4 id="Partial"><a href="#Partial" class="headerlink" title="Partial"></a>Partial</h4><blockquote>
-<p>将传入的属性变为可选项</p>
-</blockquote>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 源码</span></span><br><span class="line"><span class="keyword">type</span> Pratial&lt;T&gt; = &#123;</span><br><span class="line">  [P <span class="keyword">in</span> keyof T]?: T[p]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> User = &#123;</span><br><span class="line">  name: <span class="built_in">string</span>,</span><br><span class="line">  address: <span class="built_in">string</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">interface</span> User1 &#123;</span><br><span class="line">  name: <span class="built_in">string</span>,</span><br><span class="line">  address: <span class="built_in">string</span> </span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 例子</span></span><br><span class="line"><span class="number">1.</span> </span><br><span class="line"><span class="keyword">type</span> Obj = Pratial&lt;User&gt;</span><br><span class="line"><span class="comment">// type Obj = &#123; name?: string address?: string&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="number">2.</span></span><br><span class="line"><span class="keyword">type</span> Obj = Pratial&lt;User1&gt;</span><br><span class="line"><span class="comment">// type Obj = &#123;name?: string address?:string&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="number">3.</span><span class="comment">// 这样不需要</span></span><br><span class="line"><span class="keyword">type</span> aa = <span class="built_in">number</span></span><br><span class="line"><span class="keyword">type</span> aatype = Pratial&lt;aa&gt;</span><br></pre></td></tr></table></figure>
-
-<p>源码解释：<t>代表传入的接口，<code>keyof T</code> 拿到T所有的属性名，然后<code>in</code>遍历，将值赋给<code>P</code>，然后<code>T[P]</code>取到相应的属性值</t></p>
-<p>结合中间的<code>?</code>就知道了Partial的含义了</p>
-<h4 id="Required"><a href="#Required" class="headerlink" title="Required"></a>Required</h4><blockquote>
-<p>将传入的属性变成必选项</p>
-</blockquote>
-<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 源码</span></span><br><span class="line"><span class="keyword">type</span> Required&lt;T&gt; = &#123;[P <span class="keyword">in</span> keyof T]-?: T[p]&#125;</span><br></pre></td></tr></table></figure>
-
-<p>源码解释：<code>Required</code>和<code>Pratial</code>作用相反。源码也差不多，只是多了一个<code>-?</code>，这个很好理解，就是将可选项的代表<code>?</code>去掉。</p>
-
+        
       
 
       
@@ -611,19 +531,19 @@
 
 
   
-    <article id="post-深拷贝和浅拷贝" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-异步编程几种方法" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/09/11/深拷贝和浅拷贝/">深拷贝和浅拷贝</a>
+      <a class="article-title" href="/2019/09/11/异步编程几种方法/">JS异步编程几种方法</a>
     </h1>
   
 
         
-        <a href="/2019/09/11/深拷贝和浅拷贝/" class="archive-article-date">
+        <a href="/2019/09/11/异步编程几种方法/" class="archive-article-date">
   	<time datetime="2019-09-11T08:18:32.754Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-09-11</time>
 </a>
         
@@ -631,9 +551,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="误区"><a href="#误区" class="headerlink" title="误区"></a>误区</h3><blockquote>
-<p>浅拷贝和深拷贝只针对与引用对象。浅拷贝只拷贝一层，深拷贝会进行无限层级的拷贝</p>
-</blockquote>
+        <h4 id="1、有f1-和f2-两个方法，如果f1是一个很耗时的任务，可以把f2改成f1的回调函数"><a href="#1、有f1-和f2-两个方法，如果f1是一个很耗时的任务，可以把f2改成f1的回调函数" class="headerlink" title="1、有f1()和f2()两个方法，如果f1是一个很耗时的任务，可以把f2改成f1的回调函数"></a>1、有f1()和f2()两个方法，如果f1是一个很耗时的任务，可以把f2改成f1的回调函数</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">f1</span>(<span class="params">callback</span>) </span>&#123;</span><br><span class="line">    setTimeOut( <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="comment">// f1执行代码</span></span><br><span class="line">        callback()</span><br><span class="line">    &#125;,<span class="number">1000</span>)</span><br><span class="line">&#125;</span><br><span class="line">f1(f2)</span><br><span class="line"><span class="comment">// 缺点：耦合性太高，每个任务只能指定一个回调函数</span></span><br></pre></td></tr></table></figure>
         
       
 
@@ -657,7 +575,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2019/09/11/深拷贝和浅拷贝/">展开全文 >></a>
+          <a class="article-more-a" href="/2019/09/11/异步编程几种方法/">展开全文 >></a>
         </p>
       
 
@@ -767,19 +685,19 @@
 
 
   
-    <article id="post-异步编程几种方法" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-深拷贝和浅拷贝" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/09/11/异步编程几种方法/">JS异步编程几种方法</a>
+      <a class="article-title" href="/2019/09/11/深拷贝和浅拷贝/">深拷贝和浅拷贝</a>
     </h1>
   
 
         
-        <a href="/2019/09/11/异步编程几种方法/" class="archive-article-date">
+        <a href="/2019/09/11/深拷贝和浅拷贝/" class="archive-article-date">
   	<time datetime="2019-09-11T08:18:32.754Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-09-11</time>
 </a>
         
@@ -787,7 +705,9 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h4 id="1、有f1-和f2-两个方法，如果f1是一个很耗时的任务，可以把f2改成f1的回调函数"><a href="#1、有f1-和f2-两个方法，如果f1是一个很耗时的任务，可以把f2改成f1的回调函数" class="headerlink" title="1、有f1()和f2()两个方法，如果f1是一个很耗时的任务，可以把f2改成f1的回调函数"></a>1、有f1()和f2()两个方法，如果f1是一个很耗时的任务，可以把f2改成f1的回调函数</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">f1</span>(<span class="params">callback</span>) </span>&#123;</span><br><span class="line">    setTimeOut( <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="comment">// f1执行代码</span></span><br><span class="line">        callback()</span><br><span class="line">    &#125;,<span class="number">1000</span>)</span><br><span class="line">&#125;</span><br><span class="line">f1(f2)</span><br><span class="line"><span class="comment">// 缺点：耦合性太高，每个任务只能指定一个回调函数</span></span><br></pre></td></tr></table></figure>
+        <h3 id="误区"><a href="#误区" class="headerlink" title="误区"></a>误区</h3><blockquote>
+<p>浅拷贝和深拷贝只针对与引用对象。浅拷贝只拷贝一层，深拷贝会进行无限层级的拷贝</p>
+</blockquote>
         
       
 
@@ -811,7 +731,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2019/09/11/异步编程几种方法/">展开全文 >></a>
+          <a class="article-more-a" href="/2019/09/11/深拷贝和浅拷贝/">展开全文 >></a>
         </p>
       
 
@@ -1095,19 +1015,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">webpack</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">typescript</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">兼容性</a>
+                <a href="javascript:void(0)" class="js-tag color3">webpack</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">javascript</a>
+                <a href="javascript:void(0)" class="js-tag color4">兼容性</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1116,6 +1032,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">vue</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">javascript</a>
               </li>
              
               <li class="article-tag-list-item">
