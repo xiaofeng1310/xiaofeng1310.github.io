@@ -134,6 +134,80 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-TS进阶" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>学习之前我们先理解两个关键字<code>keyof</code>和<code>in</code>、<code>extends</code></p>
+<p><code>keyof</code>：可以用来获取一个<strong>对象接口</strong>所有属性值</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> Text &#123;</span><br><span class="line">    name: <span class="built_in">string</span>,</span><br><span class="line">    age: <span class="built_in">number</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> Test: keyof Text <span class="comment">// =&gt; "name" | "age" | "自带的属性"</span></span><br></pre></td></tr></table></figure>
+
+<p><code>in</code>：用来遍历枚举类型</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> Keys &#123;</span><br><span class="line">    Red,</span><br><span class="line">    Green</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">type</span> Obj = &#123;</span><br><span class="line">    [p <span class="keyword">in</span> Keys]: <span class="built_in">any</span></span><br><span class="line">&#125; <span class="comment">// =&gt; Obj &#123;0: any, 1: any&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Keys1 = <span class="string">"a"</span> | <span class="string">"b"</span></span><br><span class="line"><span class="keyword">type</span> Obj1 = &#123;</span><br><span class="line">  [p <span class="keyword">in</span> Keys]: <span class="built_in">any</span></span><br><span class="line">&#125; <span class="comment">// =&gt; Obj1 &#123;a: any, b: any&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>extends</code>：可以继承一个<code>interface</code>，也可以继承一个类，还可以判断有条件的类型</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">T <span class="keyword">extends</span> U ? X : Y</span><br></pre></td></tr></table></figure>
+
+<p>代码的意思是，如果T能够赋值给U，那么类型是X，否则是Y。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Words = <span class="string">'a'</span> | <span class="string">'b'</span> | <span class="string">'c'</span></span><br><span class="line"><span class="keyword">type</span> W&lt;T&gt; = T <span class="keyword">extends</span> Words ? <span class="literal">true</span> : <span class="literal">false</span></span><br><span class="line"><span class="keyword">type</span> WA = W&lt;<span class="string">'a'</span>&gt; <span class="comment">// true</span></span><br><span class="line"><span class="keyword">type</span> WD = W&lt;<span class="string">'d'</span>&gt; <span class="comment">// false</span></span><br><span class="line"><span class="comment">// 第二个例子</span></span><br><span class="line"><span class="keyword">interface</span> Ex1 &#123;</span><br><span class="line">    name: <span class="built_in">string</span>,</span><br><span class="line">    age: <span class="built_in">number</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">interface</span> Ex2 &#123;</span><br><span class="line">    text: <span class="built_in">string</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">interface</span> Ex3 &#123;</span><br><span class="line">  name: <span class="built_in">string</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">type</span> Excl = Extract&lt;Ex1, Ex2&gt; <span class="comment">// never</span></span><br><span class="line"><span class="keyword">type</span> Exc2 = Extract&lt;Ex1, Ex3&gt; <span class="comment">// Exc2 = Ex1</span></span><br></pre></td></tr></table></figure>
+
+<p>看到上面的例子，我感觉<code>extends</code>像是判断某个属性是否在接口里面</p>
+<h4 id="Partial"><a href="#Partial" class="headerlink" title="Partial"></a>Partial</h4><blockquote>
+<p>将传入的属性变为可选项</p>
+</blockquote>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 源码</span></span><br><span class="line"><span class="keyword">type</span> Pratial&lt;T&gt; = &#123;</span><br><span class="line">  [P <span class="keyword">in</span> keyof T]?: T[p]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> User = &#123;</span><br><span class="line">  name: <span class="built_in">string</span>,</span><br><span class="line">  address: <span class="built_in">string</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">interface</span> User1 &#123;</span><br><span class="line">  name: <span class="built_in">string</span>,</span><br><span class="line">  address: <span class="built_in">string</span> </span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 例子</span></span><br><span class="line"><span class="number">1.</span> </span><br><span class="line"><span class="keyword">type</span> Obj = Pratial&lt;User&gt;</span><br><span class="line"><span class="comment">// type Obj = &#123; name?: string address?: string&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="number">2.</span></span><br><span class="line"><span class="keyword">type</span> Obj = Pratial&lt;User1&gt;</span><br><span class="line"><span class="comment">// type Obj = &#123;name?: string address?:string&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="number">3.</span><span class="comment">// 这样不需要</span></span><br><span class="line"><span class="keyword">type</span> aa = <span class="built_in">number</span></span><br><span class="line"><span class="keyword">type</span> aatype = Pratial&lt;aa&gt;</span><br></pre></td></tr></table></figure>
+
+<p>源码解释：<t>代表传入的接口，<code>keyof T</code> 拿到T所有的属性名，然后<code>in</code>遍历，将值赋给<code>P</code>，然后<code>T[P]</code>取到相应的属性值</t></p>
+<p>结合中间的<code>?</code>就知道了Partial的含义了</p>
+<h4 id="Required"><a href="#Required" class="headerlink" title="Required"></a>Required</h4><blockquote>
+<p>将传入的属性变成必选项</p>
+</blockquote>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 源码</span></span><br><span class="line"><span class="keyword">type</span> Required&lt;T&gt; = &#123;[P <span class="keyword">in</span> keyof T]-?: T[p]&#125;</span><br></pre></td></tr></table></figure>
+
+<p>源码解释：<code>Required</code>和<code>Pratial</code>作用相反。源码也差不多，只是多了一个<code>-?</code>，这个很好理解，就是将可选项的代表<code>?</code>去掉。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/10/18/TS进阶/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-vue-property-decorator" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -378,6 +452,154 @@
 
 
   
+    <article id="post-异步编程几种方法" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/09/11/异步编程几种方法/">JS异步编程几种方法</a>
+    </h1>
+  
+
+        
+        <a href="/2019/09/11/异步编程几种方法/" class="archive-article-date">
+  	<time datetime="2019-09-11T08:18:32.754Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-09-11</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="1、有f1-和f2-两个方法，如果f1是一个很耗时的任务，可以把f2改成f1的回调函数"><a href="#1、有f1-和f2-两个方法，如果f1是一个很耗时的任务，可以把f2改成f1的回调函数" class="headerlink" title="1、有f1()和f2()两个方法，如果f1是一个很耗时的任务，可以把f2改成f1的回调函数"></a>1、有f1()和f2()两个方法，如果f1是一个很耗时的任务，可以把f2改成f1的回调函数</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">f1</span>(<span class="params">callback</span>) </span>&#123;</span><br><span class="line">    setTimeOut( <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="comment">// f1执行代码</span></span><br><span class="line">        callback()</span><br><span class="line">    &#125;,<span class="number">1000</span>)</span><br><span class="line">&#125;</span><br><span class="line">f1(f2)</span><br><span class="line"><span class="comment">// 缺点：耦合性太高，每个任务只能指定一个回调函数</span></span><br></pre></td></tr></table></figure>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">javaScript</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/09/11/异步编程几种方法/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-防抖" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/09/11/防抖/">防抖</a>
+    </h1>
+  
+
+        
+        <a href="/2019/09/11/防抖/" class="archive-article-date">
+  	<time datetime="2019-09-11T08:18:32.754Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-09-11</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="什么是防抖"><a href="#什么是防抖" class="headerlink" title="什么是防抖"></a>什么是防抖</h4>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">javaScript</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/09/11/防抖/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-排序二叉树" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -429,80 +651,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2019/09/11/排序二叉树/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-异步编程几种方法" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/09/11/异步编程几种方法/">JS异步编程几种方法</a>
-    </h1>
-  
-
-        
-        <a href="/2019/09/11/异步编程几种方法/" class="archive-article-date">
-  	<time datetime="2019-09-11T08:18:32.754Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-09-11</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h4 id="1、有f1-和f2-两个方法，如果f1是一个很耗时的任务，可以把f2改成f1的回调函数"><a href="#1、有f1-和f2-两个方法，如果f1是一个很耗时的任务，可以把f2改成f1的回调函数" class="headerlink" title="1、有f1()和f2()两个方法，如果f1是一个很耗时的任务，可以把f2改成f1的回调函数"></a>1、有f1()和f2()两个方法，如果f1是一个很耗时的任务，可以把f2改成f1的回调函数</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">f1</span>(<span class="params">callback</span>) </span>&#123;</span><br><span class="line">    setTimeOut( <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="comment">// f1执行代码</span></span><br><span class="line">        callback()</span><br><span class="line">    &#125;,<span class="number">1000</span>)</span><br><span class="line">&#125;</span><br><span class="line">f1(f2)</span><br><span class="line"><span class="comment">// 缺点：耦合性太高，每个任务只能指定一个回调函数</span></span><br></pre></td></tr></table></figure>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">javaScript</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/09/11/异步编程几种方法/">展开全文 >></a>
         </p>
       
 
@@ -608,80 +756,6 @@
 
 
   
-    <article id="post-防抖" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/09/11/防抖/">防抖</a>
-    </h1>
-  
-
-        
-        <a href="/2019/09/11/防抖/" class="archive-article-date">
-  	<time datetime="2019-09-11T08:18:32.754Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-09-11</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h4 id="什么是防抖"><a href="#什么是防抖" class="headerlink" title="什么是防抖"></a>什么是防抖</h4>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">javaScript</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/09/11/防抖/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
     <article id="post-from 在chrome下隐藏" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -740,86 +814,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2019/09/11/from 在chrome下隐藏/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-setinterval" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/09/11/setinterval/">setInterval遇到的问题</a>
-    </h1>
-  
-
-        
-        <a href="/2019/09/11/setinterval/" class="archive-article-date">
-  	<time datetime="2019-09-11T08:18:32.753Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-09-11</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<ul>
-<li>无视错误处理</li>
-<li>无视网络延迟</li>
-<li>时间不准确</li>
-</ul>
-</blockquote>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">javaScript</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/09/11/setinterval/">展开全文 >></a>
         </p>
       
 
@@ -1030,15 +1024,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">javaScript</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">vue</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">javascript</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">javaScript</a>
               </li>
              
               <li class="article-tag-list-item">
